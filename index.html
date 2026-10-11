@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 形状悬停效果</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1d1b1a;
+        }
+        .stage{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 56px;
+            padding:56px 32px
+        }
+
+        /* 公共部分：尺寸、文字、阴影、悬停动画
+           1) 默认阴影向下偏移 10px
+           2) 悬停：整体上移 10px（translateY(-10px)）
+           3) 悬停：阴影偏移量变为 0（0 10px → 0 0）
+           4) 悬停：图形中间出现 hover 字样（::after 伪元素，默认透明） */
+        .cube{
+            position: relative;
+            display: flex;              /* 让 ::after 的文字水平垂直居中 */
+            align-items: center;
+            justify-content: center;
+            width: 170px;
+            height: 170px;
+            cursor: pointer;
+            box-shadow: 0 10px 24px var(--glow);   /* 阴影颜色由各形状自己定义 */
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .cube::after{
+            content: "hover";
+            font: 600 24px/1 "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+            opacity: 0;                 /* 默认不显示 */
+            transform: scale(.8);
+            transition: opacity .3s ease, transform .3s ease;
+        }
+        .cube:hover{
+            transform: translateY(-10px);
+            box-shadow: 0 0 24px var(--glow);      /* 偏移量归零，光晕留在原位 */
+        }
+        .cube:hover::after{
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 1. 正方形（直角） */
+        .c1{
+            --glow: rgba(255, 94, 98, .45);
+            background: linear-gradient(135deg,#ff9a56,#ff5e62);
+        }
+        /* 2. 小圆角矩形 */
+        .c2{
+            --glow: rgba(51, 215, 184, .40);
+            border-radius: 20px;
+            background: linear-gradient(45deg,#3dcb6e,#33d7bd);
+        }
+        /* 3. 大圆角矩形（圆角更大、接近超椭圆） */
+        .c3{
+            --glow: rgba(142, 117, 157, .50);
+            border-radius: 40px;
+            background: linear-gradient(135deg,#ac88a5,#706394);
+        }
+        /* 4. 圆形 */
+        .c4{
+            --glow: rgba(248, 197, 110, .45);
+            border-radius: 50%;
+            background: linear-gradient(135deg,#f5dd5e,#fcab7e);
+        }
+        /* 5. 微圆角正方形 */
+        .c5{
+            --glow: rgba(77, 109, 129, .50);
+            border-radius: 12px;
+            background: linear-gradient(135deg,#487d65,#4d6e7f);
+        }
+        /* 6. 立体球形（径向渐变做出左上高光、边缘变暗的效果） */
+        .c6{
+            --glow: rgba(174, 140, 180, .45);
+            border-radius: 50%;
+            background: radial-gradient(circle at 68% 30%,
+                        #c69cba, #ae8cb4 32%, #907699 62%, #6b5a80 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="stage">
+        <div class="cube c1"></div>
+        <div class="cube c2"></div>
+        <div class="cube c3"></div>
+        <div class="cube c4"></div>
+        <div class="cube c5"></div>
+        <div class="cube c6"></div>
+    </div>
+</body>
+</html>
